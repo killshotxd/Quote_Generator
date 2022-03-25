@@ -8,7 +8,16 @@ let apiQuotes = [];
 
 function newQuote() {
   const quote = apiQuotes[Math.floor(Math.random() * apiQuotes.length)];
-  authorText.textContent = quote.author;
+  if (!quote.author) {
+    authorText.textContent = "Unknown";
+  } else {
+    authorText.textContent = quote.author;
+  }
+  if (quote.text.length > 120) {
+    quoteText.classList.add("long-quote");
+  } else {
+    quoteText.classList.remove("long-quote");
+  }
   quoteText.textContent = quote.text;
 }
 
@@ -20,5 +29,16 @@ async function getQuotes() {
     newQuote();
   } catch (error) {}
 }
+
+//tweet quote
+
+function tweetQuote() {
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${quoteText.textContent} - ${authorText.textContent}`;
+  window.open(twitterUrl, "_blank");
+}
+
+//Event listeners
+newQuoteBtn.addEventListener("click", newQuote);
+twitterBtn.addEventListener("click", tweetQuote);
 
 getQuotes();
